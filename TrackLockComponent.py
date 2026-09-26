@@ -9,7 +9,8 @@ class TrackLockComponent(ControlSurfaceComponent):
         self._session = session_component
         self._control_track_name = control_track_name
         self._dev_lock_active = False
-        self._held_indices = []
+        self._held_tracks = []
+        self._held_tracks_states = {}
         self._select_button_elements = []
         self._lock_button_element = None
 
@@ -40,19 +41,22 @@ class TrackLockComponent(ControlSurfaceComponent):
 
     def _register_held_track(self, index):
         if self._dev_lock_active is False:
-            if index in self._held_indices:
-                self._held_indices.remove(index)
-            self._held_indices.append(index)
+            cur_track = self._track_at_index(index)
+            if cur_track in self._held_tracks:
+                self._held_tracks.remove(cur_track)
+            if cur_track.is_foldable:
+                self._held_tracks_states[cur_track] = cur_track.fold_state
+            self._held_tracks.append(cur_track)
 
     def _leave_held_track(self, index):
         if self._dev_lock_active is False:
-            if index in self._held_indices:
-                self._held_indices.remove(index)
             cur_track = self._track_at_index(index)
+            if cur_track in self._held_tracks:
+                self._held_tracks.remove(cur_track)
             if cur_track.is_foldable:
-                            cur_track.fold_state = not cur_track.fold_state
-            if self._held_indices:
-                track = self._track_at_index(self._held_indices[-1])
+                cur_track.fold_state = self._held_tracks_states[cur_track]
+            if self._held_tracks:
+                track = self._held_tracks[-1]
             else:
                 track = self._find_control_track()
             if track is not None:
