@@ -48,6 +48,9 @@ class TrackLockComponent(ControlSurfaceComponent):
         if self._dev_lock_active is False:
             if index in self._held_indices:
                 self._held_indices.remove(index)
+            cur_track = self._track_at_index(index)
+            if cur_track.is_foldable:
+                            cur_track.fold_state = not cur_track.fold_state
             if self._held_indices:
                 track = self._track_at_index(self._held_indices[-1])
             else:
