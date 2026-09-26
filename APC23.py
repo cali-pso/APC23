@@ -32,6 +32,7 @@ from .QuantizationComponent import QuantizationComponent
 from .TransportComponent import TransportComponent
 from .TrueCueComponent import TrueCueComponent
 from .GroupFoldComponent import GroupFoldComponent
+from .TrackLockComponent import TrackLockComponent
 NUM_TRACKS = 8
 NUM_SCENES = 5
 
@@ -55,6 +56,7 @@ class APC23(APC, OptimizedControlSurface):
             self._create_recording()
             self._create_true_cue()
             self._create_group_fold()
+            self._create_track_lock()
             self._session.set_mixer(self._mixer)
         self.set_highlighting_session_component(self._session)
         self.set_device_component(self._device)
@@ -288,6 +290,15 @@ class APC23(APC, OptimizedControlSurface):
     def _create_group_fold(self):
         self._group_fold = GroupFoldComponent(session_component=self._session, name="Group_Fold", is_enabled=False, layer=Layer(fold_buttons=self._stop_buttons))
       # self._group_fold.fold_buttons.set_control_element(self._stop_buttons)
+
+    def _create_track_lock(self):
+        self._track_lock = TrackLockComponent(
+            session_component=self._session,
+            name="Track_Lock",
+            is_enabled=False,
+        )
+        self._track_lock.set_select_buttons(self._raw_select_buttons)
+        self._track_lock.set_lock_button(self._device_lock_button)
 
     def get_matrix_button(self, column, row):
         return self._matrix_rows_raw[row][column]
