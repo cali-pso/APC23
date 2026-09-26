@@ -20,6 +20,7 @@ and choose the appropriate MIDI input/output. That's it, enjoy !
 foldable - meaning it is a group -, pressing it's clip stop button will expand it and show the tracks it contains.
 Expanded tracks are shown by a blinking clip stop button. Pressing the button again will collapse the group, turning
 the button back off.
+- __TrackLock__: When device lock is disabled, selected track will always default to track named "Control" or, in it's absence, track index 0. Holding another track's select button allows to edit it's parameters until release. Enabling device lock resumes normal behavior.
 
 ### Fancy your own features ?
 
